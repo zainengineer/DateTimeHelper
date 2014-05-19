@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/globals.php';
 spl_autoload_register(function($className)
 {
     $baseName = basename($className);
@@ -13,4 +14,4 @@ function loadClassIfExists($className, $path)
     }
 }
 
-$x = new TimeHelper();
+printr(TimeHelper::dateDiff('today','today  +1 year +3 days'));
