@@ -1,0 +1,15 @@
+.idea
+runtime/*
+www/assets/*
+app/controllers/TestController.php
+app/views/test/*
+composer.phar
+composer.lock
+vendor/*
+app/migrations/m000000_*n
+.svn
+*.local.php
+*_local.bat
+TestController.php
+TestCommand.php
+config.json
