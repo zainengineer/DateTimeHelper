@@ -18,7 +18,7 @@ class TimeHelper
     {
         $date1 = self::getDateObject($date1,'c',$timeZone1);
         $date2 = self::getDateObject($date2,'c',$timeZone2);
-        $diff = $date1->diff($date2);
+        $diff = $date1->diff($date2)->days;
         return self::changeTimeUnits($diff,$outputUnit);
 
     }
@@ -152,6 +152,9 @@ class TimeHelper
         $intervalBetweenSundays = $lastSunday->diff($nextSunday);
         $completeWeeks = (int)round($intervalBetweenSundays->days / 7);
         $weekDaysBetweenSundays = $completeWeeks * 5;
+//        if ($date2->format('N') >5){
+//            $completeWeeks++;
+//        }
         $info['completeWeeks'] = $completeWeeks;
         $info['weekdays'] = $weekdays + $weekDaysBetweenSundays;
         return $info;

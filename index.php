@@ -21,7 +21,8 @@ if (class_exists('PHPUnit_Framework_TestCase')) {
 }
 $startDate = '21-May-2014';
 //printr( TimeHelper::getWeekdaysInRange($startDate, "$startDate +9 days" ));
-printr( TimeHelper::getWeekdaysInRange($startDate, "$startDate +10 days" ));
+//printr( TimeHelper::getCompleteWeeksInRange($startDate, '31-May-2014'));
+printr( TimeHelper::getCompleteWeeksInRange($startDate, '31-May-2014'));
 //printr(TimeHelper::dateDiff('today','today  +1 year +3 days'));
 //printr(TimeHelper::getWeekdaysInRange('today', '+0 days'), 'getWeekdaysInRange');
 //printr(TimeHelper::getWeekdaysInRange('today', 'today +43 days', 'm'), 'getWeekdaysInRange');
