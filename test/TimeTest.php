@@ -109,4 +109,11 @@ class TimeTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(++$i, TimeHelper::getCompleteWeeksInRange($startDate, '16-Jun-2014')); //Mon
         $this->assertEquals($i, TimeHelper::getCompleteWeeksInRange($startDate, '17-Jun-2014'));
     }
+
+    public function testUnitConvert()
+    {
+        $startDate = '21-May-2014';
+        $this->assertEquals(0, TimeHelper::getCompleteWeeksInRange($startDate, '21-May-2014'));
+        $this->assertEquals(1, TimeHelper::getCompleteWeeksInRange($startDate, '05-Jun-2014'));
+    }
 } 
