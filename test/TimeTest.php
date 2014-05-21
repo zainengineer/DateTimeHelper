@@ -115,5 +115,24 @@ class TimeTest extends PHPUnit_Framework_TestCase
         $startDate = '21-May-2014';
         $this->assertEquals(0, TimeHelper::getCompleteWeeksInRange($startDate, '21-May-2014'));
         $this->assertEquals(1, TimeHelper::getCompleteWeeksInRange($startDate, '05-Jun-2014'));
+
+        $this->assertEquals(7, TimeHelper::getCompleteWeeksInRange($startDate, '05-Jun-2014', 'd'));
+        $this->assertEquals(7 * 24, TimeHelper::getCompleteWeeksInRange($startDate, '05-Jun-2014', 'h'));
+        $this->assertEquals(7 * 24 * 60, TimeHelper::getCompleteWeeksInRange($startDate, '05-Jun-2014', 'm'));
+        $this->assertEquals(7 * 24 * 60 * 60, TimeHelper::getCompleteWeeksInRange($startDate, '05-Jun-2014', 's'));
+
+        $this->assertEquals(1, TimeHelper::dateDiff($startDate, '22-May-2014'));
+        $this->assertEquals(24, TimeHelper::dateDiff($startDate, '22-May-2014', 'h'));
+        $this->assertEquals(24 * 60, TimeHelper::dateDiff($startDate, '22-May-2014', 'm'));
+        $this->assertEquals(24 * 60 * 60, TimeHelper::dateDiff($startDate, '22-May-2014', 's'));
+        $this->assertEquals(1 / 365, TimeHelper::dateDiff($startDate, '22-May-2014', 'y'));
+    }
+
+    public function testTimeZone()
+    {
+        $startDate = '21-May-2014';
+        $this->assertEquals(30, TimeHelper::dateDiff($startDate, '21-May-2014', 'm', new DateTimeZone('Australia/Sydney'), new DateTimeZone('Australia/Adelaide')));
+        $this->assertEquals(30 * 60, TimeHelper::dateDiff($startDate, '21-May-2014', 's', new DateTimeZone('Australia/Sydney')
+            , new DateTimeZone('Australia/Adelaide')));
     }
 } 

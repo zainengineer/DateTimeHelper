@@ -14,12 +14,15 @@ class TimeHelper
      * @param DateTimeZone $timeZone2
      * @return float|int
      */
-    public static function dateDiff($date1, $date2, $outputUnit = 'd', $timeZone1=null, $timeZone2= null)
+    public static function dateDiff($date1, $date2, $outputUnit = 'd', $timeZone1 = null, $timeZone2 = null)
     {
-        $date1 = self::getDateObject($date1,'c',$timeZone1);
-        $date2 = self::getDateObject($date2,'c',$timeZone2);
-        $diff = $date1->diff($date2)->days;
-        return self::changeTimeUnits($diff,$outputUnit);
+        $date1 = self::getDateObject($date1, 'c', $timeZone1);
+        $date2 = self::getDateObject($date2, 'c', $timeZone2);
+        $diff = $date1->diff($date2);
+        $diff = $diff->s + $diff->i * 60 + $diff->h * 60 * 60 + $diff->d * 24 * 60 * 60 + $diff->m * 30 * 24 * 60 * 60
+            + $diff->y * 365 * 24 * 60 * 60;
+        $diff = $diff / (24 * 60 * 60);
+        return self::changeTimeUnits($diff, $outputUnit);
 
     }
 
@@ -98,7 +101,7 @@ class TimeHelper
     public static function getCompleteWeeksInRange($date1, $date2, $unit = 'w', $timeZone1 = null, $timeZone2 = null)
     {
         $info = self::getIntervalInfo($date1, $date2, $timeZone1, $timeZone2);
-        return self::changeTimeUnits($info['completeWeeks'], $unit,'w');
+        return self::changeTimeUnits($info['completeWeeks'], $unit, 'w');
     }
 
     /**
@@ -173,7 +176,7 @@ class TimeHelper
         $multiple['m'] = 24 * 60;
         $multiple['h'] = 24;
         $multiple['d'] = 1;
-        $multiple['w'] = 1/7;
+        $multiple['w'] = 1 / 7;
         $multiple['y'] = 1 / 365;
 
         $inputQuantity = $quantity / $multiple[$inputUnit];
