@@ -7,22 +7,25 @@ class TimeHelper
 {
 
     /**
-     * @param $date1
-     * @param $date2
-     * @param string $format
-     * @return float|int|null
+     * @param int|string|DateTime $date1
+     * @param int|string|DateTime $date2
+     * @param string $outputUnit
+     * @param DateTimeZone $timeZone1
+     * @param DateTimeZone $timeZone2
+     * @return float|int
      */
-    public static function dateDiff($date1, $date2, $format = "%a")
+    public static function dateDiff($date1, $date2, $outputUnit = 'd', $timeZone1=null, $timeZone2= null)
     {
-        $date1 = self::getDateObject($date1);
-        $date2 = self::getDateObject($date2);
+        $date1 = self::getDateObject($date1,'c',$timeZone1);
+        $date2 = self::getDateObject($date2,'c',$timeZone2);
         $diff = $date1->diff($date2);
-        return $diff->format($format);
+        return self::changeTimeUnits($diff,$outputUnit);
+
     }
 
     /**
      * @param $dtGiven
-     * @return int|null|string|DateTime
+     * @return int|string|DateTime
      */
     public static function getStamp($dtGiven)
     {
@@ -40,7 +43,7 @@ class TimeHelper
     /**
      * @param $dtGiven
      * @param string $format
-     * @return null|string
+     * @return string
      */
     public static function getDateString($dtGiven, $format = 'c')
     {
@@ -56,9 +59,9 @@ class TimeHelper
     }
 
     /**
-     * @param $dtGiven int|string|DateTime
+     * @param int|string|DateTime $dtGiven
      * @param string $format
-     * @param $timeZone DateTimeZone
+     * @param DateTimeZone $timeZone
      * @return DateTime
      */
     public static function getDateObject($dtGiven, $format = 'c', $timeZone = null)
@@ -71,11 +74,11 @@ class TimeHelper
     }
 
     /**
-     * @param $date1 int|string|DateTime
-     * @param $date2 int|string|DateTime
-     * @param $unit string use s,m,h or y
-     * @param $timeZone1 DateTimeZone
-     * @param $timeZone2 DateTimeZone
+     * @param int|string|DateTime $date1
+     * @param int|string|DateTime $date2
+     * @param string $unit use s,m,h or y
+     * @param DateTimeZone $timeZone1
+     * @param DateTimeZone $timeZone2
      * @return int
      */
     public static function getWeekdaysInRange($date1, $date2, $unit = 'd', $timeZone1 = null, $timeZone2 = null)
@@ -85,11 +88,11 @@ class TimeHelper
     }
 
     /**
-     * @param $date1 int|string|DateTime
-     * @param $date2 int|string|DateTime
-     * @param $unit string use s,m,h or y
-     * @param $timeZone1 DateTimeZone
-     * @param $timeZone2 DateTimeZone
+     * @param int|string|DateTime $date1
+     * @param int|string|DateTime $date2
+     * @param string $unit
+     * @param DateTimeZone $timeZone1
+     * @param DateTimeZone $timeZone2
      * @return int
      */
     public static function getCompleteWeeksInRange($date1, $date2, $unit = 'd', $timeZone1 = null, $timeZone2 = null)
@@ -117,6 +120,8 @@ class TimeHelper
             $date2 = $swap;
         }
 
+//        printr($date1);
+//        printr($date2);
         $daysToSunday = 7 - $date1->format("N");
         $workingDaysInFirstSpan = 6 - $date1->format("N");
         $nextSunday = clone $date1;
@@ -126,7 +131,7 @@ class TimeHelper
         // Date2 comes before next Monday
         if ($date2->getTimestamp() <= $nextSunday->getTimestamp()) {
             $info['completeWeeks'] = 0;
-            $diff = $date2->diff($date1)->days;
+            $diff = $date2->diff($date1)->days + 1;
             if ($diff < $workingDaysInFirstSpan) {
                 $info['weekdays'] = $diff;
             }
@@ -153,9 +158,9 @@ class TimeHelper
     }
 
     /**
-     * @param $quantity number
-     * @param $outputUnit string
-     * @param $inputUnit string
+     * @param number $quantity
+     * @param string $outputUnit
+     * @param string $inputUnit
      * @return float
      */
     static function changeTimeUnits($quantity, $outputUnit, $inputUnit = 'd')
